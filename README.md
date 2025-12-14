@@ -15,5 +15,10 @@ Simple command-line expense tracker application built in Java using Maven.
 
 ## How to Run
 ```bash
+locate the directory with the POM file
 mvn clean compile
-java -cp target/classes com.capgemini.expensetracker.app.ExpenseTrackerApp
+mvn exec:java
+
+## How to run JUnit tests:
+mvn clean compile
+mvn test
