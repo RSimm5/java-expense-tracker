@@ -14,11 +14,18 @@ Simple command-line expense tracker application built in Java using Maven.
 - JUnit 5
 
 ## How to Run
-locate the directory with the POM file
+
+Locate the directory containing the `pom.xml` file, then run:
+
 ```bash
 mvn clean compile
-mvn exec:java```
+mvn exec:java
+```
 
-## How to run JUnit tests:
-```mvn clean compile
-mvn test```
+## How to Run JUnit Tests
+
+```bash
+mvn clean compile
+mvn test
+```
+
