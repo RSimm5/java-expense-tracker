@@ -13,14 +13,14 @@ public class Main {
         ExpenseTracker expenseTracker = new ExpenseTracker();
 
         while (true) {
-            System.out.println(
-                "\nSelect an option (1-6)\n" +
-                "1. Add expense\n" +
+            System.out.print(
+                "\n1. Add expense\n" +
                 "2. View total expense\n" +
                 "3. View total expense by category\n" +
                 "4. View expense trend\n" +
                 "5. View highest and lowest spend category\n" +
-                "6. Exit"
+                "6. Exit\n" +
+                "Select an option (1-6): "
             );
 
             if (!scanner.hasNextInt()) {
@@ -30,6 +30,8 @@ public class Main {
             }
             int choice = scanner.nextInt();
             scanner.nextLine();
+
+            System.out.println(); // extra space for readability
 
             switch (choice) {
                 case 1:
@@ -64,7 +66,7 @@ public class Main {
     // Uses simple validity checks
     public static void addExpense(Scanner scanner, ExpenseTracker expenseTracker) {
         // get category
-        System.out.println("Enter a category");
+        System.out.print("Enter a category: ");
         String category = scanner.nextLine().trim();
         if (category.isEmpty()) {
             System.out.println("Category cannot be empty!");
@@ -72,7 +74,7 @@ public class Main {
         }
 
         // get amount
-        System.out.println("Enter an amount");
+        System.out.print("Enter an amount: ");
         if (!scanner.hasNextDouble()) {
             System.out.println("Invalid amount!");
             scanner.nextLine();
@@ -86,7 +88,7 @@ public class Main {
         }
 
         // get date
-        System.out.println("Enter a date (YYYY-MM-DD)");
+        System.out.print("Enter a date (YYYY-MM-DD): ");
         String dateInput = scanner.next();
         LocalDate date;
         try {
