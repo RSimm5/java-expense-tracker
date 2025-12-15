@@ -2,10 +2,7 @@ package com.capgemini.expensetracker;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -17,7 +14,7 @@ public class Main {
 
         while (true) {
             System.out.println(
-                "\nSelect an option (1-5)\n" +
+                "\nSelect an option (1-6)\n" +
                 "1. Add expense\n" +
                 "2. View total expense\n" +
                 "3. View total expense by category\n" +
@@ -26,8 +23,14 @@ public class Main {
                 "6. Exit"
             );
 
+            if (!scanner.hasNextInt()) {
+                System.out.println("Invalid option. Try again.");
+                scanner.nextLine();
+                continue;
+            }
             int choice = scanner.nextInt();
             scanner.nextLine();
+
             switch (choice) {
                 case 1:
                     addExpense(scanner, expenseTracker);
@@ -47,6 +50,7 @@ public class Main {
                 case 6:
                     System.out.println("Thank you for using the Expense Tracker App!");
                     System.out.println("Exiting...");
+                    scanner.close();
                     return;
                 default:
                     System.out.println("Invalid option. Try again.");
@@ -59,6 +63,7 @@ public class Main {
     // scanner for user inputs, ExpenseTracker to add Expense to
     // Uses simple validity checks
     public static void addExpense(Scanner scanner, ExpenseTracker expenseTracker) {
+        // get category
         System.out.println("Enter a category");
         String category = scanner.nextLine().trim();
         if (category.isEmpty()) {
@@ -66,7 +71,13 @@ public class Main {
             return;
         }
 
+        // get amount
         System.out.println("Enter an amount");
+        if (!scanner.hasNextDouble()) {
+            System.out.println("Invalid amount!");
+            scanner.nextLine();
+            return;
+        }
         double amount = scanner.nextDouble();
         scanner.nextLine();
         if (amount <= 0) {
@@ -74,6 +85,7 @@ public class Main {
             return;
         }
 
+        // get date
         System.out.println("Enter a date (YYYY-MM-DD)");
         String dateInput = scanner.next();
         LocalDate date;
@@ -84,6 +96,7 @@ public class Main {
             return;
         }
 
+        // add the expense
         expenseTracker.addExpense(category, amount, date);
         System.out.println("Successfully added expense.");
     }
@@ -98,7 +111,7 @@ public class Main {
     public static void showTotalByCategory(ExpenseTracker expenseTracker) {
         Map<String, Double> totals = expenseTracker.getTotalByCategory();
 
-        if (totals == null || totals.isEmpty()) {
+        if (totals.isEmpty()) {
             System.out.println("No expenses recorded yet.");
             return;
         }
@@ -116,7 +129,7 @@ public class Main {
         List<Expense> expenses = expenseTracker.getExpenses()
             .stream()
             .sorted(Comparator.comparing(Expense::getDate))
-            .toList();
+            .collect(Collectors.toList());
 
         // output
         if (expenses.isEmpty()) {
@@ -136,11 +149,12 @@ public class Main {
 
     // displays category with highest and lowest total expense amounts
     public static void showHighestLowestCategory(ExpenseTracker expenseTracker) {
-        CategoryExtreme categoryExtreme = expenseTracker.getCategoryExtremes();
-        if (categoryExtreme == null) {
+        Optional<CategoryExtreme> categoryExtremeOpt = expenseTracker.getCategoryExtremes();
+        if (!categoryExtremeOpt.isPresent()) {
             System.out.println("No expenses recorded yet.");
             return;
         }
+        CategoryExtreme categoryExtreme = categoryExtremeOpt.get();
         System.out.println("Category with highest expense:");
         System.out.printf("%-15s : %.2f%n", categoryExtreme.getHighestCategory(), categoryExtreme.getHighestAmount());
         System.out.println("Category with lowest expense:");
