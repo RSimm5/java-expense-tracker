@@ -2,7 +2,6 @@ package com.capgemini.expensetracker;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ExpenseTracker {
     private List<Expense> expenses;
@@ -46,11 +45,11 @@ public class ExpenseTracker {
     }
 
     // shows category with highest and lowest total expense amounts
-    public CategoryExtreme getCategoryExtremes() {
+    public Optional<CategoryExtreme> getCategoryExtremes() {
         Map<String, Double> totals = getTotalByCategory();
 
         if (totals.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
 
         String highestCategory = null;
@@ -71,6 +70,6 @@ public class ExpenseTracker {
             }
         }
 
-        return new CategoryExtreme(highestCategory, highestAmount, lowestCategory, lowestAmount);
+        return Optional.of(new CategoryExtreme(highestCategory, highestAmount, lowestCategory, lowestAmount));
     }
 }
