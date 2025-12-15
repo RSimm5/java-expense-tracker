@@ -60,7 +60,7 @@ public class Main {
         }
     }
 
-    // scanner for user inputs, ExpenseTracker to add Expense to
+    // scanner for user inputs, ExpenseTracker to add Expense
     // Uses simple validity checks
     public static void addExpense(Scanner scanner, ExpenseTracker expenseTracker) {
         // get category
